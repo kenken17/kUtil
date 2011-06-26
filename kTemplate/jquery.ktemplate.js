@@ -31,13 +31,12 @@
 					var $element = $(this),
 						element = this;
 					
-					// Code here
+						// Code here
 				});
 			},
 
 			public_function : function() { return 0; }
 		};
-
 
 		// Private functions
         var _privateFunction = function(t, _c) {
