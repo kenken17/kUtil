@@ -31,7 +31,7 @@
 	
 				return plugin.each(function() {
 					var $element = $(this),
-			             element = this;
+						element = this;
 					
 					var _count = 0;
 					
