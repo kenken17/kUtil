@@ -11,43 +11,51 @@
  * 
  */
 
-;(function($){
+;(function($) {
 	
-	$.kTemplate = function(element, options){
+	$.fn.kTemplate = function(method) { 
         var defaults = {
-            foo: 'bar',
-            onFoo: function() {}
+			foo : 255,
+			bar : false
+        };
+
+		// Default + User options variable
+        var plugin = this;
+			plugin.o = {};
+
+		var methods = {
+			init : function(options) {
+	            plugin.o = $.extend({}, defaults, options);
+
+				return plugin.each(function() {
+					var $element = $(this),
+			             element = this;
+					
+					// Code here
+				});
+			},
+
+			public_function : function() { return 0; }
+		};
+
+
+		// Private functions
+        var _privateFunction = function(t, _c) {
+			// Code here
         }
 
-        this.settings = {};
-
-        var $element = $(element),
-             element = element;
-
-        this.init = function() {
-            this.settings = $.extend({}, defaults, options);
-            // code goes here
-        }
-
-        this.foo_public_method = function() {
-            // code goes here
-        }
-
-        var foo_private_method = function() {
-            // code goes here
-        }
-
-        this.init();
+		// Method calling logic
+		if ( methods[method] )
+		{
+			return methods[method].apply( this, Array.prototype.slice.call(arguments, 1));
+		}
+		else if (typeof method === 'object' || ! method) {
+			return methods.init.apply( this, arguments );
+		}
+		else
+		{
+			$.error('Method ' +  method + ' does not exist.');
+		}
     }
-	
-	$.fn.kTemplate = function(options){  
 
-		return this.each(function(){        
-			if (undefined == $(this).data('kTemplate')) {
-                var plugin = new $.kTemplate(this, options);
-                $(this).data('kTemplate', plugin);
-            }			
-		});
-	};
-	
 })( jQuery );
