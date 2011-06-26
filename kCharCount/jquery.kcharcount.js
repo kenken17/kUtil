@@ -1,63 +1,90 @@
 /**
- * kUtilities jQuery Plugin - kCharCount
+ * kUtilities jQuery Plugin - kCharCount 
  * --------------------------------------------------------------------------
  *
- * Limit character count in textarea.
+ * Plugin: Character count for textboxes. 
  * 
  * 
- * @version     0.1
- * @since       29 Apr 2011
+ * @version     1.0
+ * @since       28 Apr 2011
  * @author      _ken
  * 
  */
 
-(function($){
+;(function($){
+
+	$.fn.kCharCount = function(method) { 
+        var defaults = {
+			limit : 255,				// Character limit
+			reverseCount : false,		// if true, character will reverse count, i.e 255, 254, 253...
+			countWrapper : '<span>',	// The wrapper tag for the character count
+			countClass: 'kCount'		// The wrapper class 
+        };
+
+		// Default + User options variable
+        var plugin = this;
+			plugin.o = {};
+
+		var methods = {
+			init : function(options) {
+	            plugin.o = $.extend({}, defaults, options);
 	
-	$.fn.kCharCount = function(options){  
-		
-		var o = {
-			limit : 255,			// Character limit
-			currCount : 0,			// Current character count
-			reverseCount : false,	// if true, character will reverse count, i.e 255, 254, 253...
-			countWrapper : '<span>'	// The wrapper tag for the charcter count
+				return plugin.each(function() {
+					var $element = $(this),
+			             element = this;
+					
+					var _count = 0;
+					
+					// Create wrapper element, and set the class name
+					var $countWrapper = $(plugin.o.countWrapper).addClass(plugin.o.countClass);
+
+					// Check if is textarea
+					if (! ($element.is('textarea'))) return;
+
+					_count = _checkCount($element);
+
+					$countWrapper
+						.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count))		
+						.insertAfter($element);
+
+					// Set maxlength
+					$element.attr('maxlength', plugin.o.limit);
+
+					// Bind keyup event to target textarea
+					$element.keyup(function(){
+						_count = _checkCount($element, _count);
+
+						$countWrapper.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count));
+					});
+				});
+			}
 		};
 
-		return this.each(function(){  
-			if (options) { 
-				$.extend( o, options );
-			}
-			      
-			var $this = $(this),
-				$countSpan = $(o.countWrapper);
-			
-			// Check if is textarea
-			if (! ($this.is('textarea'))) return;
-			
-			_checkCount($this);
-			
-			$countSpan
-				.text(((o.reverseCount) ? o.limit - o.currCount : o.currCount))		
-				.insertAfter($this);
-				
-			// Set maxlength
-			$this.attr('maxlength', o.limit);
-			
-			// Bind keyup event to target textarea
-			$this.keyup(function(){
-				_checkCount($this);
+		// Private function to check the current count
+        var _checkCount = function(t) {
+			_c = t.val().length;
 
-				$countSpan.text(((o.reverseCount) ? o.limit - o.currCount : o.currCount));
-			});
-		});
-		
-		function _checkCount(t){
-			o.currCount = t.val().length;
-			
-			if (o.currCount > o.limit)
+			if (_c > plugin.o.limit)
 			{
-				o.currCount = o.limit;
-				t.val(t.val().substr(0, o.limit));
-			}			
-		}			
-	};
+				_c = plugin.o.limit;
+				t.val(t.val().substr(0, plugin.o.limit));
+			}
+			
+			return _c;			
+        }
+
+		// Method calling logic
+		if ( methods[method] )
+		{
+			return methods[method].apply( this, Array.prototype.slice.call(arguments, 1));
+		}
+		else if (typeof method === 'object' || ! method) {
+			return methods.init.apply( this, arguments );
+		}
+		else
+		{
+			$.error('Method ' +  method + ' does not exist.');
+		}
+    }
+	
 })( jQuery );
