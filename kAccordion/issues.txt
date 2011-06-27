@@ -1,0 +1,3 @@
+Issues:
+
+- Margin for header (i.e h3) cause flickering during sliding motion up. Suggest to use padding instead.
