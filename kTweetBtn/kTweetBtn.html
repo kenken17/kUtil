@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>kTweetBtn - kUtilities</title>
+	<meta name="description" content="kUtilities">
+	<meta name="author" content="_ken">
+	<style>
+	
+	</style>	
+	
+	<script src="../jquery.min.js"></script>
+	<script src="jquery.ktweetbtn.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('a[rel=kTweetBtn]').kTweetBtn();			
+		});		
+	</script>
+</head>
+
+<body>
+	<div id="container">
+  		<a href="http://google.com" rel="kTweetBtn">Tweet about google!</a>
+  		<a href="http://google.com" rel="kTweetBtn" data-count="horizontal">Tweet about google!</a>
+  		<a href="http://google.com" rel="kTweetBtn" data-count="vertical" data-lang="ja">Tweet about google! (in Japanese)</a>
+	</div>
+</body>
+</html>
