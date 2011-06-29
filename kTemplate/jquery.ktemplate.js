@@ -15,8 +15,8 @@
 	
 	$.fn.kTemplate = function(method) { 
         var defaults = {
-			foo : 255,
-			bar : false
+			foo: 255,
+			bar: false
         };
 
 		// Default + User options variable
@@ -24,7 +24,7 @@
 			plugin.o = {};
 
 		var methods = {
-			init : function(options) {
+			init: function(options) {
 	            plugin.o = $.extend({}, defaults, options);
 
 				return plugin.each(function() {
@@ -35,7 +35,7 @@
 				});
 			},
 
-			public_function : function() { return 0; }
+			public_function: function() { return 0; }
 		};
 
 		// Private functions
