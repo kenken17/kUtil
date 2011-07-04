@@ -59,7 +59,7 @@
 								'data-lang': lang })
 						.addClass('twitter-share-button');
 					
-					// check i=if this is the last element
+					// check if this is the last element
 					c++;
 					if (c == l)
 						// Append the twitter widget at the last
