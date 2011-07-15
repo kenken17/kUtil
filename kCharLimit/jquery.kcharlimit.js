@@ -39,6 +39,9 @@
 							return;
 						}
 						
+						// Check if the element is shorter than the limit, then dont do anything
+						if ($element.text().length < plugin.o.limit) return;
+						
 						// Find the charatcer limit
 						var limit_str = $element.text().substr(0, plugin.o.limit);
 						var space_pos = limit_str.lastIndexOf(' ');
