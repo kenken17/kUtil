@@ -58,9 +58,7 @@
 								.bind('click', {$el: $element}, _clickHandler);
 						});
 				});
-			},
-
-			public_function : function() { return 0; }
+			}
 		};
 
 		// Handler for header being clicked		
