@@ -17,7 +17,8 @@
         var defaults = {
 			header: ' > :first-child',	// Set the header tag for each section
 			solo : true,	// Activate solo mode, which only open one section at every one time
-			active: 0		// When created, open the 0 (first) tab. Zero-based
+			active: 0,		// When created, open the 0 (first) tab. Zero-based
+			activeClass: 'active'	// The class name of the current active element
         };
 
 		// Default + User options variable
@@ -50,7 +51,7 @@
 									.hide();
 							}
 							else
-								$li.addClass('active');		// Set the open section as 'active'		
+								$li.addClass(plugin.o.activeClass);		// Set the open section as 'active'		
 							
 							// Bind the handler to header being clicked
 							$header
@@ -73,14 +74,14 @@
 					.siblings()
 					.slideUp()					// find all header (except the current one) and close them
 					.parent()
-					.removeClass('active');		// then find its parent (li) and remove 'active' class
+					.removeClass(plugin.o.activeClass);		// then find its parent (li) and remove 'active' class
 			}
 
 			$header
 				.siblings()
 				.slideToggle()				// find the clicked section and open/close it
 				.parent()
-				.toggleClass('active');		// find its parent (li) and set/remove class
+				.toggleClass(plugin.o.activeClass);		// find its parent (li) and set/remove class
         }
 
 		// Method calling logic
