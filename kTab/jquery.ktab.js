@@ -73,7 +73,8 @@
 
 		// Handler for header being clicked		
         var _clickHandler = function(e) {
-
+			e.preventDefault();
+			
 			var $tab = $(this);
 			var tab_id = $tab.attr('href');
 
