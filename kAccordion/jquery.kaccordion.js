@@ -41,16 +41,19 @@
 						.each(function(index, el){
 							$li = $(this);
 							$header = $li.find(plugin.o.header);
+
+							var $content = $header.siblings().wrapAll('<div class="accordion-content" />').parent();
 							
-							var $content = $header.siblings().wrapAll('<div class="accordion-content" />')
+							$content.hide();
+							
 							// Check for initial open section
-							if (plugin.o.active != index)
+							if (plugin.o.active == index)
 							{
-								// Hide all other
-								$content.hide();
-							}
-							else
-								$li.addClass(plugin.o.activeClass);		// Set the open section as 'active'		
+								$li
+									.addClass(plugin.o.activeClass)
+									.find('.accordion-content')
+									.show();		// Set the open section as 'active'	
+							}		
 							
 							// Bind the handler to header being clicked
 							$header
