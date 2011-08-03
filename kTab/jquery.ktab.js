@@ -1,12 +1,12 @@
 /**
- * kUtilities jQuery Plugin - kTemplate 
+ * kUtilities jQuery Plugin - kTab 
  * --------------------------------------------------------------------------
  *
- * Plugin Description
+ * Simple Tab plugin
  * 
  * 
  * @version     0.1
- * @since       28 Apr 2011
+ * @since       1 Aug 2011
  * @author      _ken
  * 
  */
