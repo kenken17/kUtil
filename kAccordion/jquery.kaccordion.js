@@ -42,13 +42,12 @@
 							$li = $(this);
 							$header = $li.find(plugin.o.header);
 							
+							var $content = $header.siblings().wrapAll('<div class="accordion-content" />')
 							// Check for initial open section
 							if (plugin.o.active != index)
 							{
 								// Hide all other
-								$header
-									.siblings()
-									.hide();
+								$content.hide();
 							}
 							else
 								$li.addClass(plugin.o.activeClass);		// Set the open section as 'active'		
