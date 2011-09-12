@@ -57,7 +57,7 @@
 					
 					// Stiching for nav items
 					$nav
-						.css({'width': plugin.o.width, 'z-index': 999})
+						.css({'width': plugin.o.width})
 						.children()						
 						.each(function(i){
 							$li_item = $(this);
@@ -98,9 +98,9 @@
 					})
 					.draggable({
 						axis: 'x',
+						zIndex: 999,
 						containment: 'parent',
 						drag: function(event, ui) {
-							console.log(ui.position.left);
 							_handleDrag(ui.position.left, $element, ratio);
 						}
 					});
