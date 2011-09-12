@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>kSlider - kUtilities</title>
+	<meta name="description" content="kUtilities">
+	<meta name="author" content="_ken">
+	<style>
+		body	{padding:0; margin:0;}
+		#kSlider, #kNav	{overflow:hidden; position:relative;}
+		#kNav a	{display:block;}
+		ul	{margin:0; display:block; padding:0; list-style:none;}
+		ul li	{margin:0; display:block;}
+	</style>	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script src="jquery.kslider.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#kSlider').kSlider({
+				width: 600,
+				height: 300,
+				nav: '#kNav'
+			});
+		});		
+	</script>
+</head>
+
+<body>
+	<div id="container">
+		<div id="kSlider">
+			<div id="div1" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div2" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div3" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div4" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div5" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>			
+			<div id="div6" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div7" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div8" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>			
+			<div id="div9" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>			
+		</div>
+		<ul id="kNav">
+			<li><a href="#div1">1</a></li>
+			<li><a href="#div2">2</a></li>
+			<li><a href="#div3">3</a></li>
+			<li><a href="#div4">4</a></li>
+			<li><a href="#div5">5</a></li>
+			<li><a href="#div6">6</a></li>			
+			<li><a href="#div7">7</a></li>
+			<li><a href="#div8">8</a></li>
+			<li><a href="#div9">9</a></li>
+		</ul>
+	</div>	
+</body>
+</html>
