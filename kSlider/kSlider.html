@@ -9,10 +9,9 @@
 	<meta name="author" content="_ken">
 	<style>
 		body	{padding:0; margin:0;}
-		#kSlider, #kNav	{overflow:hidden; position:relative;}
-		#kNav a	{display:block;}
 		ul	{margin:0; display:block; padding:0; list-style:none;}
 		ul li	{margin:0; display:block;}
+		#container	{width:500px;}
 	</style>	
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
@@ -21,9 +20,16 @@
 	<script>
 		$(document).ready(function(){
 			$('#kSlider').kSlider({
-				width: 600,
+				width: 500,
 				height: 300,
-				nav: '#kNav'
+				nav: '#kNav1'
+			});
+		
+			$('#kSlider2').kSlider({
+				width: 'parent',
+				height: 300,
+				nav: '#kNav2',
+				navWidth: 'parent'
 			});
 		});		
 	</script>
@@ -60,7 +66,7 @@
 				&nbsp;
 			</div>			
 		</div>
-		<ul id="kNav">
+		<ul id="kNav1">
 			<li><a href="#div1">1</a></li>
 			<li><a href="#div2">2</a></li>
 			<li><a href="#div3">3</a></li>
@@ -70,6 +76,47 @@
 			<li><a href="#div7">7</a></li>
 			<li><a href="#div8">8</a></li>
 			<li><a href="#div9">9</a></li>
+		</ul>
+		
+		<div id="kSlider2">
+			<div id="div21" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div22" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div23" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div24" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div25" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>			
+			<div id="div26" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div27" style="background-color:green; width:100px; height:300px;">
+				&nbsp;
+			</div>
+			<div id="div28" style="background-color:yellow; width:200px; height:300px;">
+				&nbsp;
+			</div>			
+			<div id="div29" style="background-color:blue; width:300px; height:300px;">
+				&nbsp;
+			</div>			
+		</div>
+		<ul id="kNav2">
+			<li><a href="#div21">1</a></li>
+			<li><a href="#div22">2</a></li>
+			<li><a href="#div23">3</a></li>
+			<li><a href="#div24">4</a></li>
+			<li><a href="#div25">5</a></li>
+			<li><a href="#div26">6</a></li>			
+			<li><a href="#div27">7</a></li>
+			<li><a href="#div28">8</a></li>
+			<li><a href="#div29">9</a></li>
 		</ul>
 	</div>	
 </body>

@@ -15,9 +15,10 @@
 	
 	$.fn.kSlider = function(method) { 
         var defaults = {
-			width: 500,
+			width: '100%',
 			height: 300,
-			nav: '#kNav'
+			nav: '#kNav',
+			navWidth: 'parent'
         };
 
 		// Default + User options variable
@@ -33,15 +34,23 @@
 						element = this;
 						
 					var $nav = $(plugin.o.nav);
+					var nav_width;
 					
 					var slide_width = 0;
-					var $slide_wrapper = $('<div class="kSlideWrapper" />').css({'position': 'relative', margin: 0});
+					var $slide_wrapper = $('<div class="kSlideWrapper" />').css({'position': 'relative'});
 
 					var div_width = new Array();	//individual divs width
-					
+
+					if (plugin.o.width == 'parent')
+						element_width = $element.parent().width();
+					else
+						element_width = plugin.o.width;
+						
 					// Stiching for divs into one slide
 					$element
-						.css({'width': plugin.o.width, 'height': plugin.o.height, margin: 0})
+						.width(element_width)
+						.height(plugin.o.height)
+						.css({'overflow': 'hidden', 'position': 'relative'})
 						.children()
 						.addClass('kSliderDiv')
 						.css({'float': 'left'})
@@ -55,9 +64,19 @@
 					
 					var ratio = slide_width / $element.width();
 					
+					// Follow the parent width by default
+					nav_width = $element.width();
+					
+					// else set to user define width and make sure the width is less than the slider width
+					if (plugin.o.navWidth != 'parent' && plugin.o.navWidth < $element.width())
+						nav_width = plugin.o.navWidth;
+							
+						
 					// Stiching for nav items
 					$nav
-						.css({'width': plugin.o.width})
+						.addClass('kNav')
+						.width(nav_width)
+						.css({'overflow': 'hidden', 'position': 'relative'})
 						.children()						
 						.each(function(i){
 							$li_item = $(this);
