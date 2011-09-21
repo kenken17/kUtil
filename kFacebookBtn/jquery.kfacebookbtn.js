@@ -22,7 +22,8 @@
 			showFaces: true,		// Show profile picture below the button, default 'true'
 			verb: 'like',			// Verb to use in button, 'like' or 'recommend'
 			colorScheme: 'light',	// Color scheme, 'light', 'dark'
-			font: ''				// Font to use, 'arial', 'lucida+grande', 'segoe+ui', 'tahoma', 'trebuchet+ms', 'verdana', default EMPTY
+			font: '',				// Font to use, 'arial', 'lucida+grande', 'segoe+ui', 'tahoma', 'trebuchet+ms', 'verdana', default EMPTY
+			locale: 'en_US'
         };
 
 		// Default + User options variable
@@ -50,6 +51,7 @@
 					colorScheme = plugin.o.colorScheme;
 					font = plugin.o.font;
 					verb = $element.text().toLowerCase();
+					locale = plugin.o.locale;
 
 					if (verb != 'like' && verb != 'recommend')
 						verb = plugin.o.verb;
@@ -65,6 +67,7 @@
 											'&action=' + verb + 
 											'&colorscheme=' + colorScheme + 
 											'&font=' + font + 
+											'&locale=' + locale + 
 											'&height=' + height;					
 					
 					$iframe
