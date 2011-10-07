@@ -7,7 +7,7 @@
  * 
  * @version     1.0
  * @since       27 Jun 2011
- * @author      _ken
+ * @author      _ken, @mmhan
  * 
  */
 
@@ -71,7 +71,7 @@
 			if (plugin.o.solo)
 			{
 				e.data.$el
-					.find('li ' + plugin.o.header)
+					.find('> li ' + plugin.o.header)
 					.not(this)
 					.siblings()
 					.slideUp()					// find all header (except the current one) and close them
