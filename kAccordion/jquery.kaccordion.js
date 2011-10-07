@@ -37,7 +37,7 @@
 					if (! ($element.is('ul'))) return;
 
 					$element
-						.find('li')
+						.find('> li')
 						.each(function(index, el){
 							$li = $(this);
 							$header = $li.find(plugin.o.header);
