@@ -10,51 +10,49 @@
  * @author      _ken
  * 
  */
+;
+(function ($) {
 
-;(function($) {
-	
-	$.fn.kTemplate = function(method) { 
+    $.fn.kTemplate = function (method) {
         var defaults = {
-			foo: 255,
-			bar: false
+            foo: 255,
+            bar: false
         };
 
-		// Default + User options variable
+        // Default + User options variable
         var plugin = this;
-			plugin.o = {};
+        plugin.o = {};
 
-		var methods = {
-			init: function(options) {
-	            plugin.o = $.extend({}, defaults, options);
+        var methods = {
+            init: function (options) {
+                plugin.o = $.extend({}, defaults, options);
 
-				return plugin.each(function() {
-					var $element = $(this),
-						element = this;
-					
-						// Code here
-				});
-			},
+                return plugin.each(function () {
+                    var $element = $(this),
+                        element = this;
 
-			public_function: function() { return 0; }
-		};
+                    // Code here
+                });
+            },
 
-		// Private functions
-        var _privateFunction = function(t, _c) {
-			// Code here
+            public_function: function () {
+                return 0;
+            }
+        };
+
+        // Private functions
+        var _privateFunction = function (t, _c) {
+                // Code here
+            }
+
+            // Method calling logic
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist.');
         }
-
-		// Method calling logic
-		if ( methods[method] )
-		{
-			return methods[method].apply( this, Array.prototype.slice.call(arguments, 1));
-		}
-		else if (typeof method === 'object' || ! method) {
-			return methods.init.apply( this, arguments );
-		}
-		else
-		{
-			$.error('Method ' +  method + ' does not exist.');
-		}
     }
 
-})( jQuery );
+})(jQuery);
