@@ -87,7 +87,7 @@
 				.not(tab_id)
 				.fadeOut();					// find all tab content (except the current one) and fadeOut
 
-			$(tab_id).fadeIn()			// FadeIn the current tab content
+			$(tab_id).fadeIn();			// FadeIn the current tab content
 				
 			$tab	
 				.parent()
