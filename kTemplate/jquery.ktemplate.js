@@ -9,11 +9,10 @@
  * @since       28 Apr 2011
  * @author      _ken
  * 
- */
-;
+ */;
 (function ($) {
 
-    $.fn.kTemplate = function (method) {
+	$.fn.kTemplate = function (method) {
         var defaults = {
             foo: 255,
             bar: false
