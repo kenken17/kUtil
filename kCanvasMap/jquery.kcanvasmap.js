@@ -18,7 +18,10 @@
             row: 10,
             cell: 50,
             showGrid: true,
-            stroke: 3
+            lineWidth: 6,
+            lineJoin: 'round',
+            lineCap: 'butt',
+            lines: {}
         };
 
         // Default + User options variable
@@ -41,19 +44,33 @@
                     
                     var $canvas = $('<canvas id="' + canvas_id + '" width="' + canvas_w + '" height="' + canvas_h + '"></canvas>');
                         $canvas.appendTo($element);
-
-
-                            
-                    var canvas = document.getElementById('kCanvasMap_0');
+                        
+                    var canvas = document.getElementById(canvas_id);
                     
                     // Check if support <canvas>
                     if (canvas.getContext) {                      
                         var ctx = canvas.getContext('2d');
-                        ctx.beginPath();  
- 
+                
+                        //ctx.scale(0.5, 0.5);
+                        
                         // Show the grid
                         if (o.showGrid) _showGrid(o.col, o.row, o.cell, ctx);
-                        
+
+                        // Plot all lines
+                        var $lines = $(o.lines);
+                        $($lines.attr('line')).each(function() {
+                            ctx.save();
+                            
+                            ctx.lineWidth = o.lineWidth;
+                            ctx.lineJoin = o.lineJoin;
+                            ctx.lineCap = o.lineCap;
+                            ctx.beginPath();
+                            _plotLine(this, ctx, o.cell);
+                            ctx.stroke();
+                            
+                            ctx.restore();
+                        });
+
                     } else {
                         var $canvas_img = $('<img alt="Image fallback" src="' + $element.data('src') + '" />');
                             $canvas_img.appendTo($canvas);
@@ -62,9 +79,23 @@
             }
         };
 
-        // Private functions
+        // Get the lines
+        var _plotLine = function(line, ctx, cellSize) {
+            var stops = line.stops;
+            var stops_count = stops.length;
+            
+            for (var x = 0; x < stops_count; x++) {
+                if (x == 0) 
+                    ctx.moveTo(stops[x].x * cellSize, stops[x].y * cellSize);
+                else {
+                    ctx.lineTo(stops[x].x * cellSize, stops[x].y * cellSize);
+                }            
+            }
+        }
+        
+        // Show the grid
         var _showGrid = function (col, row, cell, ctx) {
-
+            ctx.save();
             var h_end = col * cell;
             var v_end = row * cell;
             
@@ -77,20 +108,22 @@
                 ctx.beginPath();
                 ctx.moveTo(0 - offset, pos - offset);  
                 ctx.lineTo(h_end - offset, pos - offset);
-                ctx.strokeStyle = "rgba(239,239,239,0.9)";
+                ctx.strokeStyle = "rgba(230,230,230,0.9)";
                 ctx.stroke();
             }
             
+            // Vertical grid
             for (var x = 0; x < col; x++) {
                 var pos = x * cell;
                 
                 ctx.beginPath();
                 ctx.moveTo(pos - offset, 0 - offset);  
                 ctx.lineTo(pos - offset, v_end - offset);
-                ctx.strokeStyle = "rgba(239,239,239,0.9)";
+                ctx.strokeStyle = "rgba(230,230,230,0.9)";
                 ctx.stroke();
             }
-             
+            
+            ctx.restore();
         }
 
             // Method calling logic

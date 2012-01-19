@@ -1,0 +1,23 @@
+{
+    "Result": {
+        "Count": "1",
+        "PollId": "1",
+        "Name": "Question 1?",
+        "Options": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ],
+        "OptionsValue": [
+            "101",
+            "30",
+            "103",
+            "160",
+            "125",
+            "86"
+        ]
+    }
+}

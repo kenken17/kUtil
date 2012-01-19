@@ -12,8 +12,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="jquery.kcanvasmap.js"></script>
         <script>
-            $(document).ready(function(){
-                $('#container').kCanvasMap();			
+            $(document).ready(function() {
+                $.ajax({
+                    url: 'lines.json',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#container').kCanvasMap({
+                            lines: data
+                        });                                
+                    }                            
+                });
             });		
         </script>
     </head>
