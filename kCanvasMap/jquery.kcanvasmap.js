@@ -22,7 +22,7 @@
             lineJoin: 'round',
             lineCap: 'butt',
             lines: null,
-            curve: 0.5,
+            curveDegree: 0.5,
             debug: false
         };
 
@@ -89,6 +89,7 @@
             for (var x = 0; x < stops_count; x++) {
                 var currPoint = stops[x];
                 var prevPoint = stops[x-1];
+                var deg = o.curveDegree;
                 
                 var moveToX = currPoint.x * cellSize;
                 var moveToY = currPoint.y * cellSize;
@@ -114,18 +115,21 @@
                         // get the difference between the dots
                         var diff = _checkPointsPos(currPoint, prevPoint);
                         
-                        curveDegreeX = cellSize * Math.abs(diff.x) * o.curve;
-                        curveDegreeY = cellSize * Math.abs(diff.y) * o.curve;
+                        if (prevPoint.curveDegree != undefined)
+                            deg = prevPoint.curveDegree;
+                        
+                        curveDegreeX = cellSize * Math.abs(diff.x) * deg;
+                        curveDegreeY = cellSize * Math.abs(diff.y) * deg;
 
-                        // check if the distance between dots are more than 1 grid away, if more, 'S' curve else, 'C' curve
-                        if (Math.abs(diff.x) == 1 && Math.abs(diff.y) == 1) {
-                            // check if need to curve or use straight line
-                            if (prevPoint.turn == undefined) {
-                                cp1X = moveToX;
-                                cp1Y = moveToY;
-                                cp2X = moveToX;
-                                cp2Y = moveToY;                            
-                            } else {
+                        // check if need to curve or use straight line
+                        if (prevPoint.turn == undefined) {
+                            cp1X = moveToX;
+                            cp1Y = moveToY;
+                            cp2X = moveToX;
+                            cp2Y = moveToY;                            
+                        } else {                        
+                            // check if the distance between dots are more than 1 grid away, if more, 'S' curve else, 'C' curve
+                            if (prevPoint.curve == 'C') {
                                 // moving to 'top' or 'left'
                                 if (diff.x > 0 && diff.y > 0) {
                                     // Default to 'up'
@@ -189,15 +193,7 @@
                                         cp2Y = moveToY - curveDegreeY;
                                     }
                                 }  
-                                
-                            }                                                      
-                        } else {
-                            // check if need to curve or use straight line
-                            if (prevPoint.turn == undefined) {
-                                cp1X = moveToX;
-                                cp1Y = moveToY;
-                                cp2X = moveToX;
-                                cp2Y = moveToY;                            
+                                                     
                             } else {
                                 // moving to 'top' or 'left'
                                 if (diff.x > 0 && diff.y > 0) {
