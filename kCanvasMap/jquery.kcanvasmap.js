@@ -18,10 +18,12 @@
             row: 10,
             cell: 50,
             showGrid: true,
-            lineWidth: 6,
+            lineWidth: 8,
             lineJoin: 'round',
             lineCap: 'butt',
-            lines: {}
+            lines: null,
+            curve: 0.5,
+            debug: false
         };
 
         // Default + User options variable
@@ -47,8 +49,8 @@
                         
                     var canvas = document.getElementById(canvas_id);
                     
-                    // Check if support <canvas>
-                    if (canvas.getContext) {                      
+                    // Check if support <canvas> and json must be supplied
+                    if (canvas.getContext && o.lines != null) {
                         var ctx = canvas.getContext('2d');
                 
                         //ctx.scale(0.5, 0.5);
@@ -59,7 +61,7 @@
                         // Plot all lines
                         var $lines = $(o.lines);
                         $($lines.attr('line')).each(function() {
-                            ctx.save();
+                            //ctx.save();
                             
                             ctx.lineWidth = o.lineWidth;
                             ctx.lineJoin = o.lineJoin;
@@ -68,7 +70,7 @@
                             _plotLine(this, ctx, o.cell);
                             ctx.stroke();
                             
-                            ctx.restore();
+                            //ctx.restore();
                         });
 
                     } else {
@@ -85,21 +87,206 @@
             var stops_count = stops.length;
             
             for (var x = 0; x < stops_count; x++) {
+                var currPoint = stops[x];
+                var prevPoint = stops[x-1];
+                
+                var moveToX = currPoint.x * cellSize;
+                var moveToY = currPoint.y * cellSize;
+                
+                var moveFromX, moveFromY, cp1X, cp1Y, cp2X, cp2Y, curveDegreeX, curveDegreeY;
+
+                if (prevPoint != undefined) {
+                    var moveFromX = prevPoint.x * cellSize;
+                    var moveFromY = prevPoint.y * cellSize;
+                }                
+                
+                if (o.debug)
+                    console.log('point (' + x + '): ' + currPoint.x + ',' + currPoint.y);
+                    
                 if (x == 0) 
-                    ctx.moveTo(stops[x].x * cellSize, stops[x].y * cellSize);
+                    ctx.moveTo(moveToX, moveToY);
                 else {
-                    ctx.lineTo(stops[x].x * cellSize, stops[x].y * cellSize);
+                    // if in same horizonal or vetical, use line
+                    if (prevPoint.x == currPoint.x || prevPoint.y == currPoint.y) {
+                        ctx.lineTo(moveToX, moveToY);
+                    }
+                    else {
+                        // get the difference between the dots
+                        var diff = _checkPointsPos(currPoint, prevPoint);
+                        
+                        curveDegreeX = cellSize * Math.abs(diff.x) * o.curve;
+                        curveDegreeY = cellSize * Math.abs(diff.y) * o.curve;
+
+                        // check if the distance between dots are more than 1 grid away, if more, 'S' curve else, 'C' curve
+                        if (Math.abs(diff.x) == 1 && Math.abs(diff.y) == 1) {
+                            // check if need to curve or use straight line
+                            if (prevPoint.turn == undefined) {
+                                cp1X = moveToX;
+                                cp1Y = moveToY;
+                                cp2X = moveToX;
+                                cp2Y = moveToY;                            
+                            } else {
+                                // moving to 'top' or 'left'
+                                if (diff.x > 0 && diff.y > 0) {
+                                    // Default to 'up'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY - curveDegreeY;
+                                    cp2X = moveToX + curveDegreeX;
+                                    cp2Y = moveToY;
+
+                                    if (prevPoint.turn == 'left') {
+                                        cp1X = moveFromX - curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX;
+                                        cp2Y = moveToY + curveDegreeY;
+                                    }
+                                }
+
+                                // moving to 'bottom' or 'left'
+                                if (diff.x > 0 && diff.y < 0) {
+                                    // Default to 'down'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY + curveDegreeY;
+                                    cp2X = moveToX + curveDegreeX;
+                                    cp2Y = moveToY;
+                                        
+                                    if (prevPoint.turn == 'left') {
+                                        cp1X = moveFromX - curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX;
+                                        cp2Y = moveToY - curveDegreeY;
+                                    }
+                                } 
+                                
+                                // moving to 'top' or 'right'
+                                if (diff.x < 0 && diff.y > 0) {
+                                    // Default to 'up'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY - curveDegreeY;
+                                    cp2X = moveToX - curveDegreeX;
+                                    cp2Y = moveToY;
+                                        
+                                    if (prevPoint.turn == 'right') {
+                                        cp1X = moveFromX + curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX;
+                                        cp2Y = moveToY + curveDegreeY;
+                                    }
+                                } 
+                                
+                                // moving to 'bottom' or 'right'
+                                if (diff.x < 0 && diff.y < 0) {
+                                    // Default to 'down'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY + curveDegreeY;
+                                    cp2X = moveToX - curveDegreeX;
+                                    cp2Y = moveToY;
+                                        
+                                    if (prevPoint.turn == 'right') {
+                                        cp1X = moveFromX + curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX;
+                                        cp2Y = moveToY - curveDegreeY;
+                                    }
+                                }  
+                                
+                            }                                                      
+                        } else {
+                            // check if need to curve or use straight line
+                            if (prevPoint.turn == undefined) {
+                                cp1X = moveToX;
+                                cp1Y = moveToY;
+                                cp2X = moveToX;
+                                cp2Y = moveToY;                            
+                            } else {
+                                // moving to 'top' or 'left'
+                                if (diff.x > 0 && diff.y > 0) {
+                                    // Default to 'up'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY - curveDegreeY;
+                                    cp2X = moveToX;
+                                    cp2Y = moveToY + curveDegreeY;
+                                                                        
+                                    if (prevPoint.turn == 'left') {
+                                        cp1X = moveFromX - curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX + curveDegreeX;
+                                        cp2Y = moveToY;
+                                    }                                
+                                }
+                                
+                                // moving to 'bottom' or 'left'
+                                if (diff.x > 0 && diff.y < 0) {
+                                    // Default to 'down'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY + curveDegreeY;
+                                    cp2X = moveToX;
+                                    cp2Y = moveToY - curveDegreeY;
+                                        
+                                    if (prevPoint.turn == 'left') {
+                                        cp1X = moveFromX - curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX + curveDegreeX;
+                                        cp2Y = moveToY;
+                                    }
+                                }   
+
+                                // moving to 'top' or 'right'
+                                if (diff.x < 0 && diff.y > 0) {
+                                    // Default to 'up'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY - curveDegreeY;
+                                    cp2X = moveToX;
+                                    cp2Y = moveToY + curveDegreeY;
+                                        
+                                    if (prevPoint.turn == 'right') {
+                                        cp1X = moveFromX + curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX - curveDegreeX;
+                                        cp2Y = moveToY;                                    
+                                    }
+                                }
+
+                                // moving to 'bottom' or 'right'
+                                if (diff.x < 0 && diff.y < 0) {
+                                    // Default to 'down'
+                                    cp1X = moveFromX;
+                                    cp1Y = moveFromY + curveDegreeY;
+                                    cp2X = moveToX;
+                                    cp2Y = moveToY - curveDegreeY;
+                                        
+                                    if (prevPoint.turn == 'right') {
+                                        cp1X = moveFromX + curveDegreeX;
+                                        cp1Y = moveFromY;
+                                        cp2X = moveToX - curveDegreeX;
+                                        cp2Y = moveToY;                                    
+                                    }
+                                } 
+                            }
+                        }
+                        
+                        //console.log(cp1X + '-' + cp1Y + '-' + cp2X + '-' + cp2Y);
+                        ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, moveToX, moveToY);
+                    }
                 }            
             }
         }
         
+        // Check differences between two dots
+        var _checkPointsPos = function(curr, prev) {
+            return {'x': prev.x - curr.x, 'y': prev.y - curr.y};
+        }
+        
         // Show the grid
-        var _showGrid = function (col, row, cell, ctx) {
+        var _showGrid = function(col, row, cell, ctx) {
             ctx.save();
             var h_end = col * cell;
             var v_end = row * cell;
             
             var offset = 0.5;       // offset to draw 1px
+            
+            ctx.font = "7px sans-serif";
+            ctx.fillStyle = "#ccc";
 
             // Horizontal grid
             for (var x = 0; x < row; x++) {
@@ -110,6 +297,9 @@
                 ctx.lineTo(h_end - offset, pos - offset);
                 ctx.strokeStyle = "rgba(230,230,230,0.9)";
                 ctx.stroke();
+                
+                // grid label
+                ctx.fillText(x, 0, pos - 2);
             }
             
             // Vertical grid
@@ -121,6 +311,9 @@
                 ctx.lineTo(pos - offset, v_end - offset);
                 ctx.strokeStyle = "rgba(230,230,230,0.9)";
                 ctx.stroke();
+                
+                // grid label
+                ctx.fillText(x, pos, 10);
             }
             
             ctx.restore();

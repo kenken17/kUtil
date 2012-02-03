@@ -5,50 +5,14 @@
             "color": "#00ff00",
             "stops": [
                 {
-                    "name": "Stop 1",
-                    "x": 2,
-                    "y": 2
-                },
-                {
                     "name": "Stop 2",
-                    "x": 4,
-                    "y": 2
+                    "x": 5,
+                    "y": 5
                 },
                 {
                     "name": "Stop 3",
-                    "x": 5,
-                    "y": 3
-                },
-                {
-                    "name": "Stop 4",
                     "x": 6,
-                    "y": 4
-                }
-            ]
-        },
-        {
-            "name": "NW Line",
-            "color": "#ff0000",
-            "stops": [
-                {
-                    "name": "Stop 1",
-                    "x": 2,
-                    "y": 2
-                },
-                {
-                    "name": "Stop 2",
-                    "x": 4,
-                    "y": 2
-                },
-                {
-                    "name": "Stop 3",
-                    "x": 5,
-                    "y": 3
-                },
-                {
-                    "name": "Stop 4",
-                    "x": 6,
-                    "y": 4
+                    "y": 8
                 }
             ]
         }
