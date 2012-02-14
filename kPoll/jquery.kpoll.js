@@ -52,7 +52,7 @@
                             $element.append(pollQuestion).css({'width': plugin.o.width});  
                             var el_w = $element.width();                            
             
-                            if (_getCookie('ecitizen-kPoll-' + pollId))
+                            if (_getCookie('kPoll-' + pollId))
                                 _showResult($element, data);
                             else
                                 _setupPoll($element, data);
@@ -184,7 +184,7 @@
             // Set to 7 days
             exdate.setDate(exdate.getDate() + 7);
 
-            document.cookie = 'ecitizen-' + escape(id) + '=true; expires=' + exdate.toUTCString();    
+            document.cookie = '' + escape(id) + '=true; expires=' + exdate.toUTCString();    
         }
 
         var _getCookie = function (c_name) {
