@@ -2,7 +2,7 @@
  * kUtilities jQuery Plugin - kPoll
  * --------------------------------------------------------------------------
  *
- * Plugin for Poll Module (eCitizen)
+ * Plugin for Poll Module
  * 
  * 
  * @version     0.1
