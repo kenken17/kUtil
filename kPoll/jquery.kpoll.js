@@ -15,11 +15,12 @@
 
     $.fn.kPoll = function (method) {
         var defaults = {
-            width: 160,
+            width: '100%',
             barWidth: 130,
             barHeight: 10,    
             barSpeed: 1200,
-            buttonText: 'Vote'
+            buttonText: 'Submit',
+            callback: function() {}
         };
 
         // Default + User options variable
@@ -49,14 +50,16 @@
                             var pollQuestion = '<p class="kPollQuestion" id="kPoll-' + pollId + '">' + data.Result.Name + '</p>';                            
 
                             // Setup Question
+                            
                             $element.append(pollQuestion).css({'width': plugin.o.width});  
                             var el_w = $element.width();                            
-            
+
                             if (_getCookie('kPoll-' + pollId))
-                                _showResult($element, data);
+                                _showResult($element, data, -1);
                             else
-                                _setupPoll($element, data);
-                            
+                                _setupPoll($element, data);  
+
+                            plugin.o.callback();
                         }
                     });
                 });
@@ -70,14 +73,14 @@
         // Private functions
         var _showResult = function ($element, data, vote) {
             var $resultWrapper = $('<div class="kPollResultWrapper">'); 
-            var graph = '';
+            var graph = '<ul style="overflow:hidden;">';
             
             // Setup Options
             for (var x = 0; x < data.Result.Options.length; x++) {                
-                graph += '<li style="clear:both">\
-                            <div>' + data.Result.Options[x] + '</div>';
+                graph += '<li style="overflow:hidden">\
+                            <div class="kPollOptions">' + data.Result.Options[x] + '</div>';
                 
-                if (vote == (x+1)) {
+                if (vote == x) {                
                     graph += '<div class="bar" rel="' + (parseInt(data.Result.OptionsValue[x]) + 1) + '"></div>\
                                 <span class="kPollCount">' + (parseInt(data.Result.OptionsValue[x]) + 1) + '</span>';
                 } else {
@@ -87,6 +90,7 @@
                 
                 graph += '</li>';
             }            
+            graph += '</ul>';
             
             // Show'em
             $resultWrapper
@@ -106,35 +110,37 @@
             // Setup Options
             for (var x = 0; x < data.Result.Options.length; x++) {
                 pollOptions += '<li>\
-                                    <input id="kPoll-' + pollId + '-' + (x+1) + '" name="kPoll-' + pollId + '" type="radio" value="' + (x+1) + '" />\
+                                    <input id="kPoll-' + pollId + '-' + (x+1) + '" name="kPoll-' + pollId + '" type="radio" value="' + (x) + '" />\
                                     <label style="cursor:pointer" for="kPoll-' + pollId + '-' + (x+1) + '">' + data.Result.Options[x] + '</label>\
                                 </li>';
             }
             
             // Options Handler
             $element.delegate('input', 'click', function (e) {                
-                $element.find('.kPollBtn').attr('rel', $(this).val());
+                var select = $(this).val();
+                
+                url = url + '&PollVote=' + select;
+                
+                $element.find('.kPollBtn').attr('rel', select);
+                $element.find('.kPollBtn').attr('href', url);                
             });            
             
             $pollList.append(pollOptions).appendTo($questionWrapper);
-
-            
+  
             // Setup Button
-            pollButton = '<button class="kPollBtn" rel="0">' + plugin.o.buttonText + '</button>';                
+
+            pollButton = '<a href="' + url + '" class="button grey kPollBtn" rel="-1">' + plugin.o.buttonText + '</a>';
             
             // Button Handler
             $element.delegate('.kPollBtn', 'click', function (e) {
                 e.preventDefault();
                 
-                if (_saveVote($(this))) {
-                    //Set Cookie
-                    
-                    _setCookie($element.find('.kPollQuestion').attr('id'));
-                    
-                    _showResult($element, data, $(this).attr('rel'));
-                } else {
-                    alert('Please try again.');
-                }
+                if ($(this).attr('rel') == -1)
+                    alert('Please select an option.');
+                else 
+                    _saveVote($element, data);
+                
+                return false;
             });
             
             // Show'em
@@ -143,19 +149,19 @@
                 .appendTo($element);              
         }
             
-        var _saveVote = function ($el) {   
-            if ($el.attr('rel') != 0) {
-                $.ajax({
-                    url: url,
-                    contentType: "application/json; charset=utf-8",
-                    data: 'PollId=' + pollId + '&PollVote=' +  $el.attr('rel'),
-                    success: function () {
-                        return true;
-                    }
-                });
-            }
-            
-            return false;
+        var _saveVote = function ($element, data) {alert(url);
+            $.ajax({
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    _setCookie($element.find('.kPollQuestion').attr('id'));
+                
+                    _showResult($element, data, $element.find('.kPollBtn').attr('rel'));
+                },
+                error: function() {
+                    alert('Connection error. Please try again.');
+                }
+            });
         }
         
         var _runAnime = function ($el) {
