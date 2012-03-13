@@ -18,7 +18,8 @@
 			limit : 255,				// Character limit
 			reverseCount : false,		// if true, character will reverse count, i.e 255, 254, 253...
 			countWrapper : '<span>',	// The wrapper tag for the character count
-			countClass: 'kCount'		// The wrapper class 
+			countClass: 'kCount',		// The wrapper class 
+            countSuffix: ''                  // Suffix text for count
         };
 
 		// Default + User options variable
@@ -44,7 +45,7 @@
 					_count = _checkCount($element);
 
 					$countWrapper
-						.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count))		
+						.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count) + plugin.o.countSuffix)		
 						.insertAfter($element);
 
 					// Set maxlength
@@ -54,7 +55,7 @@
 					$element.keyup(function(){
 						_count = _checkCount($element, _count);
 
-						$countWrapper.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count));
+						$countWrapper.text(((plugin.o.reverseCount) ? plugin.o.limit - _count : _count) + plugin.o.countSuffix);
 					});
 				});
 			}
