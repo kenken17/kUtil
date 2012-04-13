@@ -39,9 +39,9 @@
 					// Create wrapper element, and set the class name
 					var $countWrapper = $(plugin.o.countWrapper).addClass(plugin.o.countClass);
 
-					// Check if is textarea
-					if (! ($element.is('textarea'))) return;
-
+					// Check if is textarea or input textbox
+					if ((! ($element.is('textarea'))) && (! ($element.is('input[type="text"]'))) )return;                   
+                    
 					_count = _checkCount($element);
 
 					$countWrapper
