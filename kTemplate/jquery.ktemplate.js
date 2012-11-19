@@ -9,10 +9,17 @@
  * @since       28 Apr 2011
  * @author      _ken
  * 
- */;
-(function ($) {
-
-	$.fn.kTemplate = function (method) {
+ */
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+    $.fn.kTemplate = function (method) {
         var defaults = {
             foo: 255,
             bar: false
@@ -41,8 +48,8 @@
 
         // Private functions
         var _privateFunction = function (t, _c) {
-                // Code here
-            }
+            // Code here
+        };
 
             // Method calling logic
         if (methods[method]) {
@@ -52,6 +59,5 @@
         } else {
             $.error('Method ' + method + ' does not exist.');
         }
-    }
-
-})(jQuery);
+    };
+}));
