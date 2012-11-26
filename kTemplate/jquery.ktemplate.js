@@ -35,7 +35,8 @@
 
                 return plugin.each(function () {
                     var $element = $(this),
-                        element = this;
+                        element = this,
+                        o = plugin.o;
 
                     // Code here
                 });
