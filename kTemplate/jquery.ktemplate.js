@@ -31,19 +31,29 @@
 
         var methods = {
             init: function (options) {
-                plugin.o = $.extend({}, defaults, options);
-
                 return plugin.each(function () {
                     var $element = $(this),
                         element = this,
-                        o = plugin.o;
+                        opts = $.extend({}, defaults, options),
+                        data = $element.data('kTemplate');
 
-                    // Code here
+                    if (!data) {
+                        $element.data('kTemplate', true);
+                    }
                 });
             },
 
-            public_function: function () {
-                return 0;
+            public_function: function (options) {
+                return plugin.each(function () {
+                    var $element = $(this),
+                        element = this,
+                        opts = $.extend({}, defaults, options),
+                        data = $element.data('kTemplate');
+
+                    if (data) {
+
+                    }
+                });
             }
         };
 
@@ -52,7 +62,7 @@
             // Code here
         };
 
-            // Method calling logic
+        // Method calling logic
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
