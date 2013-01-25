@@ -27,7 +27,7 @@
 
         // Default + User options variable
         var plugin = this;
-        plugin.o = {};
+        plugin.o = {};		// this o is for all plugin(s) share state
 
         var methods = {
             init: function (options) {
@@ -38,7 +38,13 @@
                         data = $element.data('kTemplate');
 
                     if (!data) {
-                        $element.data('kTemplate', true);
+						// setup for plugin wise data
+						data = {
+							foo: 0,
+							bar: true
+						};
+
+                        $element.data('kTemplate', data);
                     }
                 });
             },
@@ -46,20 +52,23 @@
             public_function: function (options) {
                 return plugin.each(function () {
                     var $element = $(this),
-                        element = this,
                         opts = $.extend({}, defaults, options),
                         data = $element.data('kTemplate');
 
                     if (data) {
+						data.foo = opts.foo;
 
+						_privateFunction(data);
                     }
                 });
             }
         };
 
         // Private functions
-        var _privateFunction = function (t, _c) {
+        var _privateFunction = function (data) {
             // Code here
+
+			// Use data.foo
         };
 
         // Method calling logic
